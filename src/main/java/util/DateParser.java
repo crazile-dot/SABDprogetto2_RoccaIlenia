@@ -27,35 +27,4 @@ public class DateParser {
         return true;
     }
 
-    public static void main(String[] args) {
-
-       System.out.println(isDateValid("2012-2013"));
-
-
-        /*Pattern pattern = Pattern.compile("\\d{4}\\S\\d{2}\\S\\d{2}T\\s{2}\\S\\d{2}\\S\\d{2}\\S\\d{3}",
-                Pattern.CASE_INSENSITIVE);
-
-        Pattern pattern = Pattern.compile(patternString);
-
-        String input = "2015-09-01T07:30:00.000";
-
-        // create a matcher that will match the given input against this pattern
-        Matcher matcher = pattern.matcher(input);
-
-        boolean matchFound = matcher.matches();
-        System.out.println(input + " - matches: " + matchFound);
-
-        input = "this passes the test";
-        // reset the matcher with a new input sequence
-        matcher.reset(input);
-        matchFound = matcher.matches();
-        System.out.println(input + " - matches: " + matchFound);
-
-        // Attempts to match the input sequence, starting at the beginning
-        // of the region, against the pattern
-        matchFound = matcher.lookingAt();
-        System.out.println(input + " - matches from the beginning: " + matchFound);*/
-
-    }
-
 }

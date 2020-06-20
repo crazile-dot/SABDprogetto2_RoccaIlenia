@@ -2,10 +2,11 @@ package util;
 
 import org.joda.time.Minutes;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class StreamSimulator {
 
-    public static String[] simulateStream(ArrayList<String[]> arrayList) throws InterruptedException{
+    public static String simulateStream(ArrayList<String[]> arrayList) throws InterruptedException{
         int difference = 0;
         String[] tuple = new String[]{};
         for(int i = 1; i < arrayList.size(); i++) { //righe del csv
@@ -23,11 +24,12 @@ public class StreamSimulator {
                 }
             }
         }
-        return tuple;
+        return tuple.toString();
     }
 
     public static String[] getTuples(String[] tuple, int time) throws InterruptedException{
-        Thread.sleep((time*60000)/86400); //trasformazione dei minuti in millisecondi
+        Thread.sleep((time*60000)/21700); //trasformazione dei minuti in millisecondi
+        //TimeUnit.MILLISECONDS.sleep((time*60000)/86400);
         System.out.println(tuple);
         return tuple;
 
