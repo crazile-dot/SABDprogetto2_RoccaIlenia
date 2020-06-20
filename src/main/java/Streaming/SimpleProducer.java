@@ -1,4 +1,4 @@
-package util;
+package Streaming;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -16,9 +16,6 @@ public class SimpleProducer {
     public static Producer<String, String> createProducer() {
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, Constants.KAFKA_BROKERS);
-        props.put(ProducerConfig.ACKS_CONFIG, Constants.ACKS);
-        props.put(ProducerConfig.RETRIES_CONFIG, Constants.RETRIES);
-        props.put(ProducerConfig.BATCH_SIZE_CONFIG, Constants.BATCH_SIZE);
         props.put(ProducerConfig.CLIENT_ID_CONFIG, Constants.CLIENT_ID);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
@@ -37,10 +34,11 @@ public class SimpleProducer {
         try {
             produce();
         } catch (InterruptedException ie) {
-            System.out.println("errore del produttore");
+            System.out.println("Errore del producer");
         } catch (IOException io) {
-            System.out.println("errore del file");
+            System.out.println("Errore di IO");
         }
     }
+
 
 }
