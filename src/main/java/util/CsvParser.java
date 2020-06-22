@@ -39,4 +39,33 @@ public class CsvParser {
 
         return failure;
     }
+
+    public static Failure customizedParsing(String csvLine) {
+        Failure failure = null;
+        String[] csvValues = csvLine.split(";");
+        String occurred = "";
+        String boro = "";
+        String delay = "";
+
+        for(int j = 0; j < csvValues.length; j++) {
+            if (csvValues[j].contains("min") || csvValues[j].contains("mmins") || csvValues[j].contains("minutes")
+                    || csvValues[j].contains("MIN") || csvValues[j].contains("MINS") || csvValues[j].contains("MINUTES")) {
+                delay = csvValues[j];
+                break;
+            }
+        }
+        for(int j = 0; j < csvValues.length; j++) {
+            if(DateParser.isDateValid(csvValues[j])) {
+                occurred = csvValues[j];
+                boro = csvValues[j+2];
+                break;
+            }
+        }
+
+        failure = new Failure(
+                DateParser.dateTimeParser(occurred), boro, delay);
+
+        return failure;
+
+    }
 }
