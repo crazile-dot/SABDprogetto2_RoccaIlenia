@@ -1,6 +1,7 @@
 package Streaming;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -8,6 +9,11 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.joda.time.Minutes;
+import util.CsvReader;
+import util.DateParser;
+import util.QuickSort;
+import util.Sorter;
 
 public class SimpleProducer {
 
@@ -24,9 +30,20 @@ public class SimpleProducer {
 
     public static void produce() throws IOException, InterruptedException {
         Producer<String, String> producer = createProducer();
-        /*producer.send(new ProducerRecord<String, String>(Constants.TOPIC_NAME,
-                StreamSimulator.simulateStream(CsvReader.getCsvLines(path))));*/
-        producer.send(new ProducerRecord<String, String>(Constants.TOPIC_NAME, "hello guys have a nice day!"));
+        //int numLines = CsvReader.getNumCsvLines(path);
+        ArrayList<String[]> arrayList = CsvReader.getCsvLinesTest(path);
+        //QuickSort.quickSort(arrayList, 0, arrayList.size() - 1);
+        //ArrayList<String[]> sorted = Sorter.sortTuples(arrayList);
+        /*for(String[] elem : sorted) {
+            System.out.println(String.join(";", elem));
+        }*/
+        for(int i = 1; i <= arrayList.size(); i++) { //righe del csv
+            String tuple = StreamSimulator.simulateStream(arrayList, i);
+            producer.send(new ProducerRecord<String, String>(Constants.TOPIC_NAME, tuple));
+            System.out.println(tuple);
+            //count++;
+        }
+        //System.out.println(count);
         producer.close();
     }
 
