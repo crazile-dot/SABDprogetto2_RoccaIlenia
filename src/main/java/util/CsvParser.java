@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 
 public class CsvParser {
 
-    public static Failure parseCSV(String csvLine) {
+    /*public static Failure parseCSV(String csvLine) {
 
         Failure failure = null;
         String[] csvValues = csvLine.split(";");
@@ -38,7 +38,7 @@ public class CsvParser {
                 value16, value17, value18, value19, value20, value21);
 
         return failure;
-    }
+    }*/
 
     public static Failure customizedParsing(String csvLine) {
         Failure failure = null;

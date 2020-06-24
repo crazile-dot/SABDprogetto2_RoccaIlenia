@@ -12,7 +12,7 @@ public class AverageAggregate implements AggregateFunction<Failure, Tuple2<Long,
 
     @Override
     public Tuple2<Long, Long> add(Failure value, Tuple2<Long, Long> accumulator) {
-        return new Tuple2<>(accumulator.f0 + 1, accumulator.f1 + 1L);
+        return new Tuple2<>(accumulator.f0 + value.getHowLongDelayed(), accumulator.f1 + 1L);
     }
 
     @Override

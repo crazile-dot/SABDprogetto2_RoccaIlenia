@@ -14,15 +14,15 @@ import util.CsvParser;
 
 public class Query1MainClass {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
 
         final StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
         environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         FlinkKafkaConsumer<String> consumer = SimpleConsumer.createConsumer();
         DataStream<Failure> parsed = environment.addSource(consumer).map(s -> CsvParser.customizedParsing(s));
-        parsed.keyBy(f -> f.getBoro()).timeWindow(Time.hours(24)).aggregate(new AverageAggregate());
-
+        SingleOutputStreamOperator stream = parsed.keyBy(f -> f.getBoro()).timeWindow(Time.hours(24)).aggregate(new AverageAggregate());
+        stream.print();
         environment.execute();
 
 
