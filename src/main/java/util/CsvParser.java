@@ -46,13 +46,44 @@ public class CsvParser {
         String occurred = "";
         String boro = "";
         String delay = "";
+        int intDelay = 0;
 
         for(int j = 0; j < csvValues.length; j++) {
-            if (csvValues[j].contains("min") || csvValues[j].contains("mmins") || csvValues[j].contains("minutes")
-                    || csvValues[j].contains("MIN") || csvValues[j].contains("MINS") || csvValues[j].contains("MINUTES")) {
-                delay = csvValues[j];
+            if(csvValues[j].contains("min")) {
+                delay = csvValues[j].replace("min", "");
+            } else if(csvValues[j].contains("mins")) {
+                delay = csvValues[j].replace("mins", "");
+            } else if(csvValues[j].contains("minutes")) {
+                delay = csvValues[j].replace("minutes", "");
+            } else if(csvValues[j].contains("MIN")) {
+                delay = csvValues[j].replace("MIN", "");
+            } else if(csvValues[j].contains("MINS")) {
+                delay = csvValues[j].replace("MINS", "");
+            } else if(csvValues[j].contains("MINUTES")) {
+                delay = csvValues[j].replace("MINUTES", "");
+            } else if(csvValues[j].contains("Min")) {
+                delay = csvValues[j].replace("Min", "");
+            } else if(csvValues[j].contains("Mins")) {
+                delay = csvValues[j].replace("Mins", "");
+            } else if(csvValues[j].contains("Minutes")) {
+                delay = csvValues[j].replace("Minutes", "");
+            } else {
                 break;
             }
+            if(delay.contains(" ")) {
+                delay.replace(" ", "");
+            }
+            if(delay.contains("-")) {
+                String[] time = delay.split("-");
+                if (isIntegerValid(time[0]) && isIntegerValid(time[1])) {
+                    intDelay = (Integer.valueOf(time[0]) + Integer.valueOf(time[1])) / 2;
+                }
+            } else {
+                if(isIntegerValid(delay)) {
+                    intDelay = Integer.valueOf(delay);
+                }
+            }
+            break;
         }
         for(int j = 0; j < csvValues.length; j++) {
             if(DateParser.isDateValid(csvValues[j])) {
@@ -61,11 +92,18 @@ public class CsvParser {
                 break;
             }
         }
-
         failure = new Failure(
-                DateParser.dateTimeParser(occurred), boro, delay);
-
+                DateParser.dateTimeParser(occurred), boro, intDelay);
         return failure;
-
     }
+
+    public static boolean isIntegerValid(String value) {
+        try {
+            Integer.valueOf(value);
+        } catch (IllegalArgumentException ia) {
+            return false;
+        }
+        return true;
+    }
+
 }

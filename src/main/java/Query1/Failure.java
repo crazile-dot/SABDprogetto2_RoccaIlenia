@@ -15,7 +15,7 @@ public class Failure {
     private DateTime createdOn;
     private String boro;
     private String busCompanyName;
-    private String howLongDelayed;
+    private int howLongDelayed;
     private int numberOfStudentsOnTheBus;
     private String hasContractorNotifiedSchools;
     private String getHasContractorNotifiedParents;
@@ -28,7 +28,7 @@ public class Failure {
 
     public Failure(String schoolYear, int busbreakdownId, String runType, String busNo, String routeNumber,
                    String reason, String schoolsServiced, DateTime occurredOn, DateTime createdOn,
-                   String boro, String busCompanyName, String howLongDelayed, int numberOfStudentsOnTheBus,
+                   String boro, String busCompanyName, int howLongDelayed, int numberOfStudentsOnTheBus,
                    String hasContractorNotifiedSchools, String getHasContractorNotifiedParents,
                    String haveYouAlertedOPT, DateTime informedOn, String incidentNumber, String lastUpdatedOn,
                    String breakdownOrRunningLate, String schoolAgeOrPrek) {
@@ -56,7 +56,7 @@ public class Failure {
         this.schoolAgeOrPrek = schoolAgeOrPrek;
     }
 
-    public Failure(DateTime occurredOn, String boro, String howLongDelayed) {
+    public Failure(DateTime occurredOn, String boro, int howLongDelayed) {
         this.occurredOn = occurredOn;
         this.boro = boro;
         this.howLongDelayed = howLongDelayed;
@@ -106,7 +106,7 @@ public class Failure {
         return busCompanyName;
     }
 
-    public String getHowLongDelayed() {
+    public int getHowLongDelayed() {
         return howLongDelayed;
     }
 

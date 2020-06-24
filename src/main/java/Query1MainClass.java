@@ -1,8 +1,11 @@
+import Query1.AverageAggregate;
 import Query1.Failure;
 
 import Streaming.SimpleConsumer;
+import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.streaming.api.TimeCharacteristic;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -17,21 +20,12 @@ public class Query1MainClass {
         environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         FlinkKafkaConsumer<String> consumer = SimpleConsumer.createConsumer();
-        DataStream<String> stream = environment.addSource(consumer);
+        DataStream<Failure> parsed = environment.addSource(consumer).map(s -> CsvParser.customizedParsing(s));
+        parsed.keyBy(f -> f.getBoro()).timeWindow(Time.hours(24)).aggregate(new AverageAggregate());
 
-        DataStream<Failure> parsed = stream.map(s -> CsvParser.customizedParsing(s))
-                .keyBy(f -> f.getBoro()).timeWindow(Time.hours(24)).reduce(
-                        new ReduceFunction<Failure>() {
-                            @Override
-                            public Failure reduce(Failure failure1, Failure failure2) throws Exception {
-                                int average = (failure1.getHowLongDelayed() + failure2.getHowLongDelayed())/2;
-                                Failure newFailure = new Failure(failure1.getOccurredOn(), failure1.getBoro(), average);
-                                return newFailure;
-                            }
-                        }
-                );
-        stream.print();
         environment.execute();
+
+
 
     }
 }
