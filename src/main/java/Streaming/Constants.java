@@ -4,8 +4,8 @@ public interface Constants {
     public static String KAFKA_BROKERS = "localhost:9092";
     public static String CLIENT_ID = "client1";
     public static String SESSION_TIMEOUT_MS = "30000";
-    public static String GROUP_ID_CONFIG = "consumerGroup2";
-    public static String TOPIC_NAME = "topic1000";
+    public static String GROUP_ID_CONFIG = "consumerGroup4";
+    public static String TOPIC_NAME = "notSortedTopic2";
     public static String OFFSET_RESET_EARLIER="earliest";
     public static String OFFSET_RESET_LATEST="latest";
     public static String ENABLE_AUTO_COMMIT = "false";

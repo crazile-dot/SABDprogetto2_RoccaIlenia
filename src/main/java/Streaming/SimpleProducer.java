@@ -13,7 +13,6 @@ import org.joda.time.Minutes;
 import util.CsvReader;
 import util.DateParser;
 import util.QuickSort;
-import util.Sorter;
 
 public class SimpleProducer {
 
@@ -32,6 +31,13 @@ public class SimpleProducer {
         Producer<String, String> producer = createProducer();
         //int numLines = CsvReader.getNumCsvLines(path);
         ArrayList<String[]> arrayList = CsvReader.getCsvLinesTest(path);
+        /*ArrayList<String[]> arrayList = new ArrayList<>();
+        String[] array1 = {"Ciao", "Mattia", "hai", "fatto", "la", "cacca", "?"};
+        String[] array2 = {"Ciao matti", "tu vidi", "legami", "?"};
+        String[] array3 = {"Ciao", "Mattia", "hai", "fatto", "la", "cacca", "?"};
+        arrayList.add(array1);
+        arrayList.add(array2);
+        arrayList.add(array3);*/
         //QuickSort.quickSort(arrayList, 0, arrayList.size() - 1);
         //ArrayList<String[]> sorted = Sorter.sortTuples(arrayList);
         /*for(String[] elem : sorted) {

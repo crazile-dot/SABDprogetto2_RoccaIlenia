@@ -1,6 +1,6 @@
 package util;
 
-import org.apache.spark.SparkConf;
+/*import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Sorter {
 
-    /*public static void sortTuples(ArrayList<String[]> arrayList) {
+    public static void sortTuples(ArrayList<String[]> arrayList) {
         arrayList.sort(new Comparator<String[]>() {
             @Override
             public int compare(String[] o1, String[] o2) {
@@ -34,7 +34,7 @@ public class Sorter {
                 return 2;
             }
         });
-    }*/
+    }
 
     public static ArrayList<String[]> sortTuples(ArrayList<String[]> arrayList) {
         SparkConf conf = new SparkConf()
@@ -68,7 +68,7 @@ public class Sorter {
         ArrayList<String[]> array = new ArrayList<>(list);
         return array;
     }
-}
+}*/
 
 
 

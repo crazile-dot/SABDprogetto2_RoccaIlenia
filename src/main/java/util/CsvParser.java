@@ -1,5 +1,6 @@
 package util;
 
+import Query1.AverageAggregate;
 import Query1.Failure;
 import org.joda.time.DateTime;
 
@@ -40,60 +41,87 @@ public class CsvParser {
         return failure;
     }*/
 
-    public static Failure customizedParsing(String csvLine) {
-        Failure failure = null;
+    public static Failure customized2Parsing(String csvLine) {
         String[] csvValues = csvLine.split(";");
+        Failure failure = null;
         String occurred = "";
-        String boro = "";
+
+        for(int j = 0; j < csvValues.length; j++) {
+            if(DateParser.isDateValid(csvValues[j])) {
+                occurred = csvValues[j];
+                failure = new Failure(
+                        DateParser.dateTimeParser(occurred), csvValues[5], 1, 0);
+                break;
+            }
+        }
+        return failure;
+    }
+
+    public static Failure customized1Parsing(String csvLine) {
+        String[] csvValues = csvLine.split(";");
+        Failure failure = null;
+        String occurred = "";
+        String bBoro = "";
         String delay = "";
         int intDelay = 0;
 
         for(int j = 0; j < csvValues.length; j++) {
-            if(csvValues[j].contains("min")) {
-                delay = csvValues[j].replace("min", "");
+            if(csvValues[j].contains("minutes")) {
+                delay = csvValues[j].replace("minutes", "");
             } else if(csvValues[j].contains("mins")) {
                 delay = csvValues[j].replace("mins", "");
-            } else if(csvValues[j].contains("minutes")) {
-                delay = csvValues[j].replace("minutes", "");
-            } else if(csvValues[j].contains("MIN")) {
-                delay = csvValues[j].replace("MIN", "");
-            } else if(csvValues[j].contains("MINS")) {
-                delay = csvValues[j].replace("MINS", "");
+            } else if(csvValues[j].contains("min")) {
+                delay = csvValues[j].replace("min", "");
             } else if(csvValues[j].contains("MINUTES")) {
                 delay = csvValues[j].replace("MINUTES", "");
-            } else if(csvValues[j].contains("Min")) {
-                delay = csvValues[j].replace("Min", "");
-            } else if(csvValues[j].contains("Mins")) {
-                delay = csvValues[j].replace("Mins", "");
+            } else if(csvValues[j].contains("MINS")) {
+                delay = csvValues[j].replace("MINS", "");
+            } else if(csvValues[j].contains("MIN")) {
+                delay = csvValues[j].replace("MIN", "");
             } else if(csvValues[j].contains("Minutes")) {
                 delay = csvValues[j].replace("Minutes", "");
-            } else {
+            } else if(csvValues[j].contains("Mins")) {
+                delay = csvValues[j].replace("Mins", "");
+            } else if(csvValues[j].contains("Min")) {
+                delay = csvValues[j].replace("Min", "");
+            }
+            if(!delay.equals("") && delay.contains(".")) {
+                delay = delay.replace(".", "");
+            }
+            if(!delay.equals("")) {
+                delay = delay.trim();
+            }
+            if(!delay.equals("")) {
+                if(delay.contains("-")) {
+                    String[] time = delay.split("-");
+                    if (isIntegerValid(time[0]) && isIntegerValid(time[1])) {
+                        intDelay = (Integer.valueOf(time[0]) + Integer.valueOf(time[1])) / 2;
+                    }
+                }else if(delay.contains("/")) {
+                    String[] time = delay.split("/");
+                    if (isIntegerValid(time[0]) && isIntegerValid(time[1])) {
+                        intDelay = (Integer.valueOf(time[0]) + Integer.valueOf(time[1])) / 2;
+                    }
+                } else {
+                    if(isIntegerValid(delay)) {
+                        intDelay = Integer.valueOf(delay);
+                    }
+                }
+            }
+            if(!delay.equals("")) {
                 break;
             }
-            if(delay.contains(" ")) {
-                delay.replace(" ", "");
-            }
-            if(delay.contains("-")) {
-                String[] time = delay.split("-");
-                if (isIntegerValid(time[0]) && isIntegerValid(time[1])) {
-                    intDelay = (Integer.valueOf(time[0]) + Integer.valueOf(time[1])) / 2;
-                }
-            } else {
-                if(isIntegerValid(delay)) {
-                    intDelay = Integer.valueOf(delay);
-                }
-            }
-            break;
+
         }
-        for(int j = 0; j < csvValues.length; j++) {
-            if(DateParser.isDateValid(csvValues[j])) {
-                occurred = csvValues[j];
-                boro = csvValues[j+2];
+        for(int j = 2; j < csvValues.length; j++) {
+            if(DateParser.isDateValid(csvValues[j-2])) {
+                occurred = csvValues[j-2];
+                bBoro = csvValues[j];
+                failure = new Failure(
+                        DateParser.dateTimeParser(occurred), bBoro, intDelay);
                 break;
             }
         }
-        failure = new Failure(
-                DateParser.dateTimeParser(occurred), boro, intDelay);
         return failure;
     }
 

@@ -1,8 +1,11 @@
 package Query1;
 
+import org.apache.commons.collections.FactoryUtils;
 import org.joda.time.DateTime;
 
-public class Failure {
+import java.io.Serializable;
+
+public class Failure implements Serializable {
 
     private String schoolYear;
     private int busbreakdownId;
@@ -25,6 +28,9 @@ public class Failure {
     private String lastUpdatedOn;
     private String breakdownOrRunningLate;
     private String schoolAgeOrPrek;
+    private AverageAggregate average;
+    private int flag;
+    private int rank;
 
     public Failure(String schoolYear, int busbreakdownId, String runType, String busNo, String routeNumber,
                    String reason, String schoolsServiced, DateTime occurredOn, DateTime createdOn,
@@ -60,6 +66,13 @@ public class Failure {
         this.occurredOn = occurredOn;
         this.boro = boro;
         this.howLongDelayed = howLongDelayed;
+    }
+
+    public Failure(DateTime occurredOn, String reason, int flag, int rank) {
+        this.occurredOn = occurredOn;
+        this.reason = reason;
+        this.flag = flag;
+        this.rank = rank;
     }
 
     public String getSchoolYear() {
@@ -144,5 +157,17 @@ public class Failure {
 
     public String getSchoolAgeOrPrek() {
         return schoolAgeOrPrek;
+    }
+
+    public AverageAggregate getAverage() {
+        return average;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public int getRank() {
+        return rank;
     }
 }

@@ -12,6 +12,12 @@ public class StreamSimulator {
 
     private static final String path = "data/bus-breakdown-and-delays.csv";
 
+    /*public static String simulateStream(ArrayList<String[]> arrayList, int i) throws InterruptedException {
+        TimeUnit.MILLISECONDS.sleep(5000);
+        String s = String.join(",", arrayList.get(i-1));
+        return s;
+    }*/
+
     public static String simulateStream(ArrayList<String[]> arrayList, int i) throws InterruptedException{
         String tuple = "";
         int difference;

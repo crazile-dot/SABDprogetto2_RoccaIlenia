@@ -4,7 +4,9 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 
+import Query1.Failure;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.streaming.api.functions.AssignerWithPunctuatedWatermarks;
 import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -12,6 +14,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import util.CustomWatermarkEmitter;
 
 public class SimpleConsumer {
 
@@ -27,7 +30,7 @@ public class SimpleConsumer {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
         FlinkKafkaConsumer<String> consumer = new FlinkKafkaConsumer<>(Constants.TOPIC_NAME, new SimpleStringSchema(), props);
-        consumer.setStartFromLatest();
+        //consumer.setStartFromLatest();
         return consumer;
     }
 
