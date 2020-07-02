@@ -1,11 +1,10 @@
-package Query1;
+package util;
 
-import org.apache.commons.collections.FactoryUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.joda.time.DateTime;
 
-import java.io.Serializable;
-
-public class Failure implements Serializable {
+public class Failure {
 
     private String schoolYear;
     private int busbreakdownId;
@@ -14,7 +13,7 @@ public class Failure implements Serializable {
     private String routeNumber;
     private String reason;
     private String schoolsServiced;
-    private DateTime occurredOn;
+    private long occurredOn;
     private DateTime createdOn;
     private String boro;
     private String busCompanyName;
@@ -28,12 +27,13 @@ public class Failure implements Serializable {
     private String lastUpdatedOn;
     private String breakdownOrRunningLate;
     private String schoolAgeOrPrek;
-    private AverageAggregate average;
     private int flag;
     private int rank;
 
+    public Failure() {}
+
     public Failure(String schoolYear, int busbreakdownId, String runType, String busNo, String routeNumber,
-                   String reason, String schoolsServiced, DateTime occurredOn, DateTime createdOn,
+                   String reason, String schoolsServiced, long occurredOn, DateTime createdOn,
                    String boro, String busCompanyName, int howLongDelayed, int numberOfStudentsOnTheBus,
                    String hasContractorNotifiedSchools, String getHasContractorNotifiedParents,
                    String haveYouAlertedOPT, DateTime informedOn, String incidentNumber, String lastUpdatedOn,
@@ -62,17 +62,22 @@ public class Failure implements Serializable {
         this.schoolAgeOrPrek = schoolAgeOrPrek;
     }
 
-    public Failure(DateTime occurredOn, String boro, int howLongDelayed) {
+    public Failure(long occurredOn, String boro, int howLongDelayed) {
         this.occurredOn = occurredOn;
         this.boro = boro;
         this.howLongDelayed = howLongDelayed;
     }
 
-    public Failure(DateTime occurredOn, String reason, int flag, int rank) {
+    public Failure(long occurredOn, String reason, int flag, int rank) {
         this.occurredOn = occurredOn;
         this.reason = reason;
         this.flag = flag;
         this.rank = rank;
+    }
+
+    public String toJson() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(this);
     }
 
     public String getSchoolYear() {
@@ -103,7 +108,7 @@ public class Failure implements Serializable {
         return schoolsServiced;
     }
 
-    public DateTime getOccurredOn() {
+    public long getOccurredOn() {
         return occurredOn;
     }
 
@@ -159,15 +164,103 @@ public class Failure implements Serializable {
         return schoolAgeOrPrek;
     }
 
-    public AverageAggregate getAverage() {
-        return average;
-    }
-
     public int getFlag() {
         return flag;
     }
 
     public int getRank() {
         return rank;
+    }
+
+    public void setSchoolYear(String schoolYear) {
+        this.schoolYear = schoolYear;
+    }
+
+    public void setBusbreakdownId(int busbreakdownId) {
+        this.busbreakdownId = busbreakdownId;
+    }
+
+    public void setRunType(String runType) {
+        this.runType = runType;
+    }
+
+    public void setBusNo(String busNo) {
+        this.busNo = busNo;
+    }
+
+    public void setRouteNumber(String routeNumber) {
+        this.routeNumber = routeNumber;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public void setSchoolsServiced(String schoolsServiced) {
+        this.schoolsServiced = schoolsServiced;
+    }
+
+    public void setOccurredOn(long occurredOn) {
+        this.occurredOn = occurredOn;
+    }
+
+    public void setCreatedOn(DateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public void setBoro(String boro) {
+        this.boro = boro;
+    }
+
+    public void setBusCompanyName(String busCompanyName) {
+        this.busCompanyName = busCompanyName;
+    }
+
+    public void setHowLongDelayed(int howLongDelayed) {
+        this.howLongDelayed = howLongDelayed;
+    }
+
+    public void setNumberOfStudentsOnTheBus(int numberOfStudentsOnTheBus) {
+        this.numberOfStudentsOnTheBus = numberOfStudentsOnTheBus;
+    }
+
+    public void setHasContractorNotifiedSchools(String hasContractorNotifiedSchools) {
+        this.hasContractorNotifiedSchools = hasContractorNotifiedSchools;
+    }
+
+    public void setGetHasContractorNotifiedParents(String getHasContractorNotifiedParents) {
+        this.getHasContractorNotifiedParents = getHasContractorNotifiedParents;
+    }
+
+    public void setHaveYouAlertedOPT(String haveYouAlertedOPT) {
+        this.haveYouAlertedOPT = haveYouAlertedOPT;
+    }
+
+    public void setInformedOn(DateTime informedOn) {
+        this.informedOn = informedOn;
+    }
+
+    public void setIncidentNumber(String incidentNumber) {
+        this.incidentNumber = incidentNumber;
+    }
+
+    public void setLastUpdatedOn(String lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
+    }
+
+    public void setBreakdownOrRunningLate(String breakdownOrRunningLate) {
+        this.breakdownOrRunningLate = breakdownOrRunningLate;
+    }
+
+    public void setSchoolAgeOrPrek(String schoolAgeOrPrek) {
+        this.schoolAgeOrPrek = schoolAgeOrPrek;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 }

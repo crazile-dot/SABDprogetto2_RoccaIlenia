@@ -11,25 +11,25 @@ import org.joda.time.DateTime;
 import java.text.DecimalFormat;
 
 
-public class AverageAggregate implements AggregateFunction<Tuple3<DateTime, String, Integer>, Tuple2<Long, Long>, Double> {
+public class AverageAggregate implements AggregateFunction<Tuple3<Long, String, Integer>, Tuple4<Long, String, Long, Long>, Tuple3<Long, String, Double>> {
     @Override
-    public Tuple2<Long, Long> createAccumulator() {
-        return new Tuple2<>(0L, 0L);
+    public Tuple4<Long, String, Long, Long> createAccumulator() {
+        return new Tuple4<>(0L, "", 0L, 0L);
     }
 
     @Override
-    public Tuple2<Long, Long> add(Tuple3<DateTime, String, Integer> value, Tuple2<Long, Long> accumulator) {
-        return new Tuple2<Long, Long>(accumulator.f0 + value.f2, accumulator.f1 + 1L);
+    public Tuple4<Long, String, Long, Long> add(Tuple3<Long, String, Integer> value, Tuple4<Long, String, Long, Long> accumulator) {
+        return new Tuple4<Long, String, Long, Long>(value.f0, value.f1, accumulator.f2 + value.f2, accumulator.f3 + 1L);
     }
 
     @Override
-    public Double getResult(Tuple2<Long, Long> accumulator) {
-        return Precision.round(((double) accumulator.f0)/accumulator.f1, 2);
+    public Tuple3<Long, String, Double> getResult(Tuple4<Long, String, Long, Long> accumulator) {
+        return new Tuple3<>(accumulator.f0, accumulator.f1, Precision.round(((double) accumulator.f2)/accumulator.f3, 2));
     }
 
     @Override
-    public Tuple2<Long, Long> merge(Tuple2<Long, Long> a, Tuple2<Long, Long> b) {
-        return new Tuple2<>(a.f0 + b.f0, a.f1 + b.f1);
+    public Tuple4<Long, String, Long, Long> merge(Tuple4<Long, String, Long, Long> a, Tuple4<Long, String, Long, Long> b) {
+        return new Tuple4<>(a.f0, a.f1, a.f2 + b.f2, a.f3 + b.f3);
     }
 }
 

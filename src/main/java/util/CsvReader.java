@@ -26,7 +26,7 @@ public class CsvReader {
         String row = "";
         if (csvFile.isFile()) {
             BufferedReader csvReader = new BufferedReader(new FileReader(path));
-            while (csvValues.size() < 1000) {
+            while (csvValues.size() < 38000) {
                 row = csvReader.readLine();
                 String[] data = row.split(";");
                 csvValues.add(data);

@@ -1,24 +1,19 @@
 package Streaming;
 
-import java.time.Duration;
-import java.util.Arrays;
 import java.util.Properties;
 
-import Query1.Failure;
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
-import org.apache.flink.streaming.api.functions.AssignerWithPunctuatedWatermarks;
+import util.Constants;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import util.CustomWatermarkEmitter;
+import util.CustomDeserializer;
 
 public class SimpleConsumer {
 
-    public static FlinkKafkaConsumer<String> createConsumer() {
+    public static FlinkKafkaConsumer<Tuple3<Long, String, Integer>> createConsumer() {
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Constants.KAFKA_BROKERS);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, Constants.GROUP_ID_CONFIG);
@@ -29,28 +24,16 @@ public class SimpleConsumer {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
-        FlinkKafkaConsumer<String> consumer = new FlinkKafkaConsumer<>(Constants.TOPIC_NAME, new SimpleStringSchema(), props);
+        FlinkKafkaConsumer<Tuple3<Long, String, Integer>> consumer = new FlinkKafkaConsumer<>(Constants.TOPIC_A, new CustomDeserializer(), props);
+        consumer.assignTimestampsAndWatermarks(new AscendingTimestampExtractor<Tuple3<Long, String, Integer>>() {
+            @Override
+            public long extractAscendingTimestamp(Tuple3<Long, String, Integer> element) {
+                //System.out.println("Extract: " + Instant.ofEpochMilli(element.f0.getMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime());
+                return element.f0;
+            }
+        });
         //consumer.setStartFromLatest();
         return consumer;
     }
-
-    /*public static void consume() {
-        FlinkKafkaConsumer<String> consumer = createConsumer();
-        ConsumerRecords<String, String> consumerRecords = consumer.poll(Duration.ofMillis(1000));
-
-        consumerRecords.forEach(record -> {
-            System.out.println("Record Key " + record.key());
-            System.out.println("Record value " + record.value());
-            System.out.println("Record partition " + record.partition());
-            System.out.println("Record offset " + record.offset());
-        });
-        // commits the offset of record to broker.
-        consumer.commitAsync();
-        consumer.close();
-    }
-
-    public static void main(String[] args) {
-        consume();
-    }*/
 }
 

@@ -1,9 +1,5 @@
 package util;
 
-import Query1.AverageAggregate;
-import Query1.Failure;
-import org.joda.time.DateTime;
-
 public class CsvParser {
 
     /*public static Failure parseCSV(String csvLine) {
@@ -50,7 +46,7 @@ public class CsvParser {
             if(DateParser.isDateValid(csvValues[j])) {
                 occurred = csvValues[j];
                 failure = new Failure(
-                        DateParser.dateTimeParser(occurred), csvValues[5], 1, 0);
+                        DateParser.dateTimeParserMillis(occurred), csvValues[5], 1, 0);
                 break;
             }
         }
@@ -94,12 +90,12 @@ public class CsvParser {
             if(!delay.equals("")) {
                 if(delay.contains("-")) {
                     String[] time = delay.split("-");
-                    if (isIntegerValid(time[0]) && isIntegerValid(time[1])) {
+                    if (time.length > 1 &&isIntegerValid(time[0]) && isIntegerValid(time[1])) {
                         intDelay = (Integer.valueOf(time[0]) + Integer.valueOf(time[1])) / 2;
                     }
                 }else if(delay.contains("/")) {
                     String[] time = delay.split("/");
-                    if (isIntegerValid(time[0]) && isIntegerValid(time[1])) {
+                    if (time.length > 1 && isIntegerValid(time[0]) && isIntegerValid(time[1])) {
                         intDelay = (Integer.valueOf(time[0]) + Integer.valueOf(time[1])) / 2;
                     }
                 } else {
@@ -118,7 +114,7 @@ public class CsvParser {
                 occurred = csvValues[j-2];
                 bBoro = csvValues[j];
                 failure = new Failure(
-                        DateParser.dateTimeParser(occurred), bBoro, intDelay);
+                        DateParser.dateTimeParserMillis(occurred), bBoro, intDelay);
                 break;
             }
         }

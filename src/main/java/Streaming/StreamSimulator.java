@@ -1,12 +1,9 @@
 package Streaming;
 
 import org.joda.time.Minutes;
-import util.CsvReader;
 import util.DateParser;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class StreamSimulator {
 
@@ -23,7 +20,7 @@ public class StreamSimulator {
         int difference;
         //int N = CsvReader.getNumCsvLines(path);
         for(int j = 1; j < arrayList.get(i-1).length - 1; j++) {
-            if(i == 1) {
+            if(i == 2) {
                 difference = 0;
                 tuple = getTuple(arrayList.get(i-1), difference);
             } else {
@@ -45,8 +42,7 @@ public class StreamSimulator {
     }
 
     public static String getTuple(String[] tuple, int time) throws InterruptedException{
-        //Thread.sleep((time*60000)/43200); //trasformazione dei minuti in millisecondi
-        TimeUnit.MILLISECONDS.sleep((time*60000)/43200);
+        Thread.sleep((time*60000)/17280);
         String s = String.join(";", tuple);
         return s;
     }
