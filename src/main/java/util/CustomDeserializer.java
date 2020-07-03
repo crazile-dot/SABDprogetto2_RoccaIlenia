@@ -3,12 +3,13 @@ package util;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple3;
+import org.apache.flink.api.java.tuple.Tuple6;
 import org.apache.flink.api.java.typeutils.TupleTypeInfo;
 
 import java.io.IOException;
 import java.text.ParseException;
 
-public class CustomDeserializer implements DeserializationSchema<Tuple3<Long, String, Integer>> {
+public class CustomDeserializer implements DeserializationSchema<Tuple6<Long, String, Integer, String, Integer, Integer>> {
 
     private static final long serialVersionUID = 6154188370181669758L;
 
@@ -19,12 +20,12 @@ public class CustomDeserializer implements DeserializationSchema<Tuple3<Long, St
      * @return the comment object in flink tuple format
      */
     @Override
-    public Tuple3<Long, String, Integer> deserialize(byte[] bytes) throws IOException {
+    public Tuple6<Long, String, Integer, String, Integer, Integer> deserialize(byte[] bytes) throws IOException {
         String json = new String(bytes);
         Sentence comment = Sentence.parseJsonToObject(json);
-        Tuple3<Long, String, Integer> res;
+        Tuple6<Long, String, Integer, String, Integer, Integer> res;
         try {
-            res = comment.toTuple3();
+            res = comment.toTuple6();
         } catch (ParseException pe) {
             res = null;
         }
@@ -32,7 +33,7 @@ public class CustomDeserializer implements DeserializationSchema<Tuple3<Long, St
     }
 
     @Override
-    public boolean isEndOfStream(Tuple3<Long, String, Integer> tuple3) {
+    public boolean isEndOfStream(Tuple6<Long, String, Integer, String, Integer, Integer> tuple6) {
         return false;
     }
 
@@ -40,10 +41,13 @@ public class CustomDeserializer implements DeserializationSchema<Tuple3<Long, St
      * Return the type information of Comment class
      */
     @Override
-    public TypeInformation<Tuple3<Long, String, Integer>> getProducedType() {
+    public TypeInformation<Tuple6<Long, String, Integer, String, Integer, Integer>> getProducedType() {
         return new TupleTypeInfo<>(
                 TypeInformation.of(Long.class),
                 TypeInformation.of(String.class),
+                TypeInformation.of(Integer.class),
+                TypeInformation.of(String.class),
+                TypeInformation.of(Integer.class),
                 TypeInformation.of(Integer.class));
     }
 }

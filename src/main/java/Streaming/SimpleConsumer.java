@@ -2,6 +2,7 @@ package Streaming;
 
 import java.util.Properties;
 
+import org.apache.flink.api.java.tuple.Tuple6;
 import util.Constants;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
@@ -13,7 +14,7 @@ import util.CustomDeserializer;
 
 public class SimpleConsumer {
 
-    public static FlinkKafkaConsumer<Tuple3<Long, String, Integer>> createConsumer() {
+    public static FlinkKafkaConsumer<Tuple6<Long, String, Integer, String, Integer, Integer>> createConsumer() {
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Constants.KAFKA_BROKERS);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, Constants.GROUP_ID_CONFIG);
@@ -24,10 +25,10 @@ public class SimpleConsumer {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
-        FlinkKafkaConsumer<Tuple3<Long, String, Integer>> consumer = new FlinkKafkaConsumer<>(Constants.TOPIC_A, new CustomDeserializer(), props);
-        consumer.assignTimestampsAndWatermarks(new AscendingTimestampExtractor<Tuple3<Long, String, Integer>>() {
+        FlinkKafkaConsumer<Tuple6<Long, String, Integer, String, Integer, Integer>> consumer = new FlinkKafkaConsumer<>(Constants.TOPIC_A, new CustomDeserializer(), props);
+        consumer.assignTimestampsAndWatermarks(new AscendingTimestampExtractor<Tuple6<Long, String, Integer, String, Integer, Integer>>() {
             @Override
-            public long extractAscendingTimestamp(Tuple3<Long, String, Integer> element) {
+            public long extractAscendingTimestamp(Tuple6<Long, String, Integer, String, Integer, Integer> element) {
                 //System.out.println("Extract: " + Instant.ofEpochMilli(element.f0.getMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime());
                 return element.f0;
             }

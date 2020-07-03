@@ -33,7 +33,7 @@ public class SimpleProducer {
         ArrayList<String[]> arrayList = CsvReader.getCsvLinesTest(path);
         for(int i = 2; i <= arrayList.size(); i++) {
             String string = StreamSimulator.simulateStream(arrayList, i);
-            Failure failure = CsvParser.customized1Parsing(string);
+            Failure failure = CsvParser.customizedParsing(string);
             if(failure != null) {
                 producer.send(new ProducerRecord<String, String>(Constants.TOPIC_A, failure.toJson()));
                 System.out.println(failure.toJson());

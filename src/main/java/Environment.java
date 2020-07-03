@@ -7,6 +7,7 @@ import org.apache.flink.api.common.serialization.SimpleStringEncoder;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple4;
+import org.apache.flink.api.java.tuple.Tuple6;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -25,36 +26,15 @@ public class Environment {
 
     private static final String outputPath = "data/out.csv";
 
-    public static Tuple4<StreamExecutionEnvironment, StreamingFileSink<Double>, StreamingFileSink<Tuple2<String, Integer>>, FlinkKafkaConsumer<Tuple3<Long, String, Integer>>> getEnvironment() {
+    public static Tuple2<StreamExecutionEnvironment, FlinkKafkaConsumer<Tuple6<Long, String, Integer, String, Integer, Integer>>> getEnvironment() {
 
         final StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
         environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
         environment.getConfig().setLatencyTrackingInterval(2000L);
         environment.registerTypeWithKryoSerializer(DateTime.class, JodaDateTimeSerializer.class);
-        /*environment.setRestartStrategy(RestartStrategies.fixedDelayRestart(
-                3, org.apache.flink.api.common.time.Time.of(10, TimeUnit.SECONDS)));*/
 
-        final StreamingFileSink<Double> sink = StreamingFileSink
-                .forRowFormat(new Path(outputPath), new SimpleStringEncoder<Double>())
-                .withRollingPolicy(
-                        DefaultRollingPolicy.builder()
-                                .withRolloverInterval(TimeUnit.MINUTES.toMillis(15))
-                                .withInactivityInterval(TimeUnit.MINUTES.toMillis(5))
-                                .withMaxPartSize(1024 * 1024 * 1024)
-                                .build())
-                .build();
+        FlinkKafkaConsumer<Tuple6<Long, String, Integer, String, Integer, Integer>> consumer = SimpleConsumer.createConsumer();
 
-        final StreamingFileSink<Tuple2<String, Integer>> testSink = StreamingFileSink
-                .forRowFormat(new Path(outputPath), new SimpleStringEncoder<Tuple2<String, Integer>>())
-                .withRollingPolicy(
-                        DefaultRollingPolicy.builder()
-                                .withRolloverInterval(TimeUnit.MINUTES.toMillis(15))
-                                .withInactivityInterval(TimeUnit.MINUTES.toMillis(5))
-                                .withMaxPartSize(1024 * 1024 * 1024)
-                                .build())
-                .build();
-
-        FlinkKafkaConsumer<Tuple3<Long, String, Integer>> consumer = SimpleConsumer.createConsumer();
-        return new  Tuple4<>(environment, sink, testSink, consumer);
+        return new  Tuple2<>(environment, consumer);
     }
 }

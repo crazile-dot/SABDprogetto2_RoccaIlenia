@@ -27,8 +27,8 @@ public class Failure {
     private String lastUpdatedOn;
     private String breakdownOrRunningLate;
     private String schoolAgeOrPrek;
-    private int flag;
-    private int rank;
+    private int flag; // # volte in cui compare tipologia di reason
+    private int rank; // posizione in classifica
 
     public Failure() {}
 
@@ -62,14 +62,10 @@ public class Failure {
         this.schoolAgeOrPrek = schoolAgeOrPrek;
     }
 
-    public Failure(long occurredOn, String boro, int howLongDelayed) {
+    public Failure(long occurredOn, String boro, int howLongDelayed, String reason, int flag, int rank) {
         this.occurredOn = occurredOn;
         this.boro = boro;
         this.howLongDelayed = howLongDelayed;
-    }
-
-    public Failure(long occurredOn, String reason, int flag, int rank) {
-        this.occurredOn = occurredOn;
         this.reason = reason;
         this.flag = flag;
         this.rank = rank;
