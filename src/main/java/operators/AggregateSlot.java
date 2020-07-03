@@ -1,4 +1,4 @@
-package Query2;
+package operators;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -13,14 +13,12 @@ public class AggregateSlot implements AggregateFunction<Tuple2<Tuple6<Long, Stri
 
     @Override
     public Tuple7<Long, String, Integer, String, Integer, Integer, String> add(Tuple2<Tuple6<Long, String, Integer, String, Integer, Integer>, String> tuple2, Tuple7<Long, String, Integer, String, Integer, Integer, String> tuple7) {
-        //add a new record to the list (Article id, # of comments)
         return new Tuple7<>(tuple2.f0.f0, tuple2.f0.f1, tuple2.f0.f2, tuple2.f0.f3, tuple2.f0.f4, tuple2.f0.f5, tuple2.f1);
 
     }
 
     @Override
     public Tuple7<Long, String, Integer, String, Integer, Integer, String> getResult(Tuple7<Long, String, Integer, String, Integer, Integer, String> tuple7) {
-        //sort the list and emit the first three article rank
         return new Tuple7<>(tuple7.f0, tuple7.f1, tuple7.f2, tuple7.f3, tuple7.f4, tuple7.f5, tuple7.f6);
     }
 

@@ -1,4 +1,4 @@
-package Streaming;
+package streaming;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,8 +17,6 @@ import util.Failure;
 
 public class SimpleProducer {
 
-    private static final String path = "/home/crazile/IdeaProjects/SABDprogetto2_RoccaIlenia/data/bus-breakdown-and-delays.csv";
-
     public static Producer<String, String> createProducer() {
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, Constants.KAFKA_BROKERS);
@@ -28,7 +26,12 @@ public class SimpleProducer {
         return new KafkaProducer<>(props);
     }
 
-    public static void produce() throws IOException, InterruptedException {
+    /** Creazione di un KafkaProducer e simulazione dello streaming dei messaggi
+     * @param path
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public static void produce(String path) throws IOException, InterruptedException {
         Producer<String, String> producer = createProducer();
         ArrayList<String[]> arrayList = CsvReader.getCsvLines(path);
         for(int i = 2; i <= arrayList.size(); i++) {
@@ -43,8 +46,12 @@ public class SimpleProducer {
     }
 
     public static void main(String[] args) {
+
+        final String pathToFile = "s3://" + args[0] + "/bus-breakdown-and-delays.csv";
+        //final String pathToFile = "data/bus-breakdown-and-delays.csv";
+
         try {
-            produce();
+            produce(pathToFile);
         } catch (InterruptedException ie) {
             System.out.println("Errore del producer");
         } catch (IOException io) {

@@ -2,6 +2,10 @@ package util;
 
 public class CsvParser {
 
+    /** Parsing del csv tenendo conto delle inconsistenze più ricorrenti
+     * @param csvLine
+     * @return
+     */
     public static Failure customizedParsing(String csvLine) {
         String[] csvValues = csvLine.split(";");
         Failure failure = null;

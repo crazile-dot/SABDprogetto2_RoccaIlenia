@@ -1,10 +1,9 @@
-package Streaming;
+package streaming;
 
 import java.util.Properties;
 
 import org.apache.flink.api.java.tuple.Tuple6;
 import util.Constants;
-import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -26,6 +25,8 @@ public class SimpleConsumer {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
         FlinkKafkaConsumer<Tuple6<Long, String, Integer, String, Integer, Integer>> consumer = new FlinkKafkaConsumer<>(Constants.TOPIC_A, new CustomDeserializer(), props);
+        /** Generazione dei watermark
+         */
         consumer.assignTimestampsAndWatermarks(new AscendingTimestampExtractor<Tuple6<Long, String, Integer, String, Integer, Integer>>() {
             @Override
             public long extractAscendingTimestamp(Tuple6<Long, String, Integer, String, Integer, Integer> element) {

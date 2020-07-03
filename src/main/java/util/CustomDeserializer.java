@@ -13,12 +13,6 @@ public class CustomDeserializer implements DeserializationSchema<Tuple6<Long, St
 
     private static final long serialVersionUID = 6154188370181669758L;
 
-
-    /**
-     * Deserializer method
-     * @param bytes: stream read by kafka consumer
-     * @return the comment object in flink tuple format
-     */
     @Override
     public Tuple6<Long, String, Integer, String, Integer, Integer> deserialize(byte[] bytes) throws IOException {
         String json = new String(bytes);
@@ -37,9 +31,6 @@ public class CustomDeserializer implements DeserializationSchema<Tuple6<Long, St
         return false;
     }
 
-    /**
-     * Return the type information of Comment class
-     */
     @Override
     public TypeInformation<Tuple6<Long, String, Integer, String, Integer, Integer>> getProducedType() {
         return new TupleTypeInfo<>(

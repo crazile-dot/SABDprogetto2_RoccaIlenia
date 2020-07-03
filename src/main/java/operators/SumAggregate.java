@@ -1,4 +1,4 @@
-package Query2;
+package operators;
 
 import org.apache.commons.math3.util.Precision;
 import org.apache.flink.api.common.functions.AggregateFunction;

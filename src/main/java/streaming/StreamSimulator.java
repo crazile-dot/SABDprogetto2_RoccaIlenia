@@ -1,4 +1,4 @@
-package Streaming;
+package streaming;
 
 import org.joda.time.Minutes;
 import util.DateParser;
@@ -7,14 +7,13 @@ import java.util.ArrayList;
 
 public class StreamSimulator {
 
-    private static final String path = "data/bus-breakdown-and-delays.csv";
-
-    /*public static String simulateStream(ArrayList<String[]> arrayList, int i) throws InterruptedException {
-        TimeUnit.MILLISECONDS.sleep(5000);
-        String s = String.join(",", arrayList.get(i-1));
-        return s;
-    }*/
-
+    /** Metodo che simula lo streaming dei dati
+     *
+     * @param arrayList
+     * @param i
+     * @return
+     * @throws InterruptedException
+     */
     public static String simulateStream(ArrayList<String[]> arrayList, int i) throws InterruptedException{
         String tuple = "";
         int difference;
@@ -41,10 +40,15 @@ public class StreamSimulator {
         return tuple;
     }
 
+    /** Metodo che ritarda l'invio delle tuple alla sorgente in base
+     * alla differenza tra i timestamp di due messaggi consecutivi
+     * @param tuple
+     * @param time
+     * @return
+     * @throws InterruptedException
+     */
     public static String getTuple(String[] tuple, int time) throws InterruptedException{
-        if((time*60000)/43200 > 0) {
-            Thread.sleep((time*60000)/43200);
-        }
+        Thread.sleep((time*60000)/43200);
         String s = String.join(";", tuple);
         return s;
     }

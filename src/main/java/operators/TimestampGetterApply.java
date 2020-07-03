@@ -1,14 +1,11 @@
-package Query1;
+package operators;
 
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.api.java.tuple.Tuple3;
-import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.api.java.tuple.Tuple6;
 import org.apache.flink.streaming.api.functions.windowing.AllWindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -21,7 +18,6 @@ public class TimestampGetterApply implements AllWindowFunction<Tuple6<Long, Stri
                 list.add(tuple2);
         });
         list.sort(Comparator.comparing(t -> t.f0));
-        //Emit the results as window start timestamp and list of <timeslot ID, # comments>
         collector.collect(new Tuple2<>(new DateTime(timeWindow.getStart()), list));
     }
 }

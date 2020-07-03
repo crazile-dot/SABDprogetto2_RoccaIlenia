@@ -18,9 +18,7 @@ public class Sentence {
     private String rank;
 
     /**
-     * Method to parse a json-formatted object to a Comment class
-     * @param json: the json string to parse
-     * @return: the comment object
+     * Metodo per parsare un json-formatted object in una classe Sentence
      */
     public static Sentence parseJsonToObject(String json) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -28,9 +26,7 @@ public class Sentence {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper.readValue(json, Sentence.class);
     }
-    /**
-     * @return the object in a Tuple15 flink format
-     */
+
     public Tuple6<Long, String, Integer, String, Integer, Integer> toTuple6() throws NumberFormatException, ParseException {
         return new Tuple6<>(
                 Long.valueOf(this.occurredOn),
