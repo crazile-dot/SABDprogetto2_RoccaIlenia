@@ -42,7 +42,9 @@ public class StreamSimulator {
     }
 
     public static String getTuple(String[] tuple, int time) throws InterruptedException{
-        Thread.sleep((time*60000)/17280);
+        if((time*60000)/43200 > 0) {
+            Thread.sleep((time*60000)/43200);
+        }
         String s = String.join(";", tuple);
         return s;
     }

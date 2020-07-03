@@ -30,7 +30,7 @@ public class SimpleProducer {
 
     public static void produce() throws IOException, InterruptedException {
         Producer<String, String> producer = createProducer();
-        ArrayList<String[]> arrayList = CsvReader.getCsvLinesTest(path);
+        ArrayList<String[]> arrayList = CsvReader.getCsvLines(path);
         for(int i = 2; i <= arrayList.size(); i++) {
             String string = StreamSimulator.simulateStream(arrayList, i);
             Failure failure = CsvParser.customizedParsing(string);
